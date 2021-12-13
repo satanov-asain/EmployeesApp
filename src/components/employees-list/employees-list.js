@@ -7,7 +7,7 @@ const EmployeesList = (props) =>{
     const employeesItemRender = props.data.map(item=>{
         const {id, ...itemProps} = item;
         return(
-            <EmployeesListItem key = {id}id {...itemProps}/>
+            <EmployeesListItem key = {id} {...itemProps}/>
         )
     })
 
