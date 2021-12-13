@@ -7,6 +7,9 @@ import AppFilter from '../app-filter/app-filter';
 import EmployeesList from '../employees-list/employees-list';
 import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
+import {v4 as uuidv4} from 'uuid';
+const superId=uuidv4();
+console.log(superId);
 class App extends Component{
     constructor(props){
         super(props);
@@ -17,6 +20,7 @@ class App extends Component{
                 {name:"Ергали Кажыахметов", salary : 240000, increaseClass :true, id : 3}   
             ]
         }
+        this.maxId=4
     }
 
     deleteEmployee=(id)=>{
@@ -25,6 +29,22 @@ class App extends Component{
                 data : data.filter(item=>item.id!==id)
             }
         })
+    }
+
+    addEmployee=(eName,eSalary)=>{
+        const newEmployee={
+            name:eName,
+            salary:eSalary,
+            increase: false,
+            id: this.maxId++
+        };
+        
+        this.setState(({data}) => {
+            const newArr = [...data, newEmployee];
+            return {
+                data: newArr
+            }
+        });
     }
 
     render(){
@@ -36,7 +56,7 @@ class App extends Component{
                     <AppFilter/>
                 </div>
                 <EmployeesList data = {this.state.data} onDelete={this.deleteEmployee}/>
-                <EmployeesAddForm/> 
+                <EmployeesAddForm onAdd={this.addEmployee}/> 
             </div>
             
         )
