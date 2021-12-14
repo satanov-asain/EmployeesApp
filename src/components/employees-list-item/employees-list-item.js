@@ -9,7 +9,7 @@ class EmployeesListItem extends Component{
     }
 
     render(){
-        const {name, salary, onDelete, onToggleIncrease, onToggleLiked, increase, like} = this.props;
+        const {name, salary, onDelete, onToggleProp, increase, like} = this.props;
         
         let liClassNames = "list-group-item  d-flex justify-content-between";
         increase ? liClassNames += " increase":liClassNames += "" ;
@@ -19,12 +19,14 @@ class EmployeesListItem extends Component{
         return (
             <li className={liClassNames}>
                 <span className="list-group-item-label"
-                      onClick={onToggleLiked}>{name}</span>
+                      data-toggle='like'
+                      onClick={onToggleProp}>{name}</span>
                 <input type="text" className="list-group-item-input" defaultValue={salary + 'тг'}/>
                 <div className='d-flex justify-content-center align-items-center'>
                     <button type="button"
                         className="btn-cookie btn-sm "
-                        onClick={onToggleIncrease}>
+                        data-toggle='increase'
+                        onClick={onToggleProp}>
                         <i className="fas fa-cookie"></i>
                     </button>
     

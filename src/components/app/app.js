@@ -18,11 +18,12 @@ class App extends Component{
                 {name:"Даурен Гажипов", salary : 120000, increase : false , like : false , id : 1},
                 {name:"Артем Бер", salary : 320000, increase : false , like : false , id : 2},
                 {name:"Ергали Кажыахметов", salary : 240000, increase : false , like : false , id : 3}   
-            ]
+            ]        
         }
         this.maxId=4
+        
     }
-
+  
     deleteEmployee=(id)=>{
         this.setState(({data}) => {
             return{
@@ -47,24 +48,13 @@ class App extends Component{
             }
         });
     }
-    onToggleIncrease =(id)=>{
-        this.setState(({data})=>{
-            const oldItemIndex=data.findIndex(item=> item.id === id )
-            const oldItem=data[oldItemIndex];
-            const newItem={...oldItem, increase: !oldItem.increase}
-            const newArr=[...data.slice(0,oldItemIndex),newItem,...data.slice(oldItemIndex+1)]
-            return {
-                data: newArr
-            }
-        })
-    }
-
-    onToggleLiked=(id)=>{
+    
+    onToggleProp=(id, prop)=>{
       this.setState(({data})=>{
           return{
               data:data.map(item=>{
                   if(item.id===id){
-                      return {...item, like:!item.like }
+                      return {...item, [prop]:!item[prop] }
                   }else{
                       return item;
                   }
@@ -74,17 +64,19 @@ class App extends Component{
     }
 
     render(){
+        const total=this.state.data.length;
+        const premia = this.state.data.filter(item=>item.increase).length;
         return(
             <div className="app">
-                <AppInfo/>
+                <AppInfo total={total}
+                         premia={premia}/>
                 <div className="search-panel">
                     <SearchPanel/>
                     <AppFilter/>
                 </div>
                 <EmployeesList data = {this.state.data} 
                                onDelete={this.deleteEmployee}
-                               onToggleIncrease={this.onToggleIncrease}
-                               onToggleLiked={this.onToggleLiked}/>
+                               onToggleProp={this.onToggleProp}/>
                 <EmployeesAddForm onAdd={this.addEmployee}/> 
             </div>
             
