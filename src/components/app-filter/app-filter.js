@@ -13,7 +13,7 @@ const AppFilter = () =>{
             </button>
             <button className="btn btn-outline-light"
                     type="button">
-                        Оклад свыше 400.000
+                        Оклад свыше 300.000
             </button>
         </div>
     )

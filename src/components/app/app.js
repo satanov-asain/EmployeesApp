@@ -15,10 +15,11 @@ class App extends Component{
         super(props);
         this.state={
             data:[
-                {name:"Даурен Гажипов", salary : 120000, increase : false , like : false , id : 1},
+                {name:"Даурен Гажипов", salary : 720000, increase : false , like : false , id : 1},
                 {name:"Артем Бер", salary : 320000, increase : false , like : false , id : 2},
                 {name:"Ергали Кажыахметов", salary : 240000, increase : false , like : false , id : 3}   
-            ]        
+            ],
+            term:""        
         }
         this.maxId=4
         
@@ -63,18 +64,32 @@ class App extends Component{
       })
     }
 
+    searchEmp=(items,term)=>{
+        if(term.length===0) {return items;};
+
+       return items.filter((item)=>{
+           return item.name.indexOf(term) > -1
+       })
+    }
+
+    onUpdateSearch=(term)=>{
+        this.setState({term: term})
+    }
+
     render(){
         const total=this.state.data.length;
         const premia = this.state.data.filter(item=>item.increase).length;
+        const {term,data}=this.state;
+        const visibleData=this.searchEmp(data,term)
         return(
             <div className="app">
                 <AppInfo total={total}
                          premia={premia}/>
                 <div className="search-panel">
-                    <SearchPanel/>
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
                     <AppFilter/>
                 </div>
-                <EmployeesList data = {this.state.data} 
+                <EmployeesList data = {visibleData} 
                                onDelete={this.deleteEmployee}
                                onToggleProp={this.onToggleProp}/>
                 <EmployeesAddForm onAdd={this.addEmployee}/> 
