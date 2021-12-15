@@ -16,10 +16,11 @@ class App extends Component{
         this.state={
             data:[
                 {name:"Даурен Гажипов", salary : 720000, increase : false , like : false , id : 1},
-                {name:"Артем Бер", salary : 320000, increase : false , like : false , id : 2},
+                {name:"Артем Бер", salary : 320000, increase : false , like : true , id : 2},
                 {name:"Ергали Кажыахметов", salary : 240000, increase : false , like : false , id : 3}   
             ],
-            term:""        
+            term:"",
+            filter:'all'
         }
         this.maxId=4
         
@@ -75,19 +76,38 @@ class App extends Component{
     onUpdateSearch=(term)=>{
         this.setState({term: term})
     }
+    filterRender=(items,filter)=>{
+        switch (filter){
+            case 'like':
+                return items.filter(item=>item.like);
+                
+            case 'moreThan300k':
+                return items.filter(item=> item.salary>300000);
+                
+            default:
+                return items
+        }
+    }
+
+    onSelectFilter=(filter)=>{
+        this.setState({
+            filter:filter
+        })
+    }
 
     render(){
         const total=this.state.data.length;
         const premia = this.state.data.filter(item=>item.increase).length;
-        const {term,data}=this.state;
-        const visibleData=this.searchEmp(data,term)
+        const {term,data,filter}=this.state;
+        const visibleData=this.filterRender(this.searchEmp(data,term),filter);
         return(
             <div className="app">
                 <AppInfo total={total}
                          premia={premia}/>
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                    <AppFilter/>
+                    <AppFilter filter={filter}
+                                onSelectFilter={this.onSelectFilter}/>
                 </div>
                 <EmployeesList data = {visibleData} 
                                onDelete={this.deleteEmployee}
